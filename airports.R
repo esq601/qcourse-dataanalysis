@@ -41,19 +41,20 @@ aus_pct <- aus_pct %>%
   left_join(aus_pct1, by = "facility")
 
   
-
+aus_report <- aus_report %>%
+  left_join(select(aus_pct,facility,pct), by = "facility")
 
 aus_report$facility <- fct_relevel(aus_report$facility, levels = aus_pct$facility)
 
 ggplot(aus_report, aes(x = date_fmt)) +
-  geom_path(aes(y = actual_arrivals, color = open),size = 1.25) +
+  geom_path(aes(y = actual_arrivals, color = pct),size = 1.25) +
   geom_path(data = aus_comp, aes(y = actual_arrivals)) +
   geom_label(data = aus_pct, aes( y= 1.1 * actual_arrivals,
                                   x = as.Date("2021-03-01"),
                                   label = scales::percent(pct,1)),
              size = 3) +
   theme_minimal() +
-  ggsci::scale_color_aaas() +
+  scale_color_viridis_c() +
   facet_wrap(vars(facility), scales= "free_y") +
   scale_x_date(labels = scales::date_format(format = "%m-%y")) +
   theme(
@@ -61,14 +62,13 @@ ggplot(aus_report, aes(x = date_fmt)) +
     strip.background = element_rect(color = "black"),
     panel.background = element_rect(color = "black"),
     axis.text = element_blank(),
-    legend.position = "top"
+    legend.position = "none"
   ) +
   labs(
-    title = "Airports Responding to State Policy",
+    title = "Airports Recovering at Different Rates",
     subtitle = "Comparing April 2019 to April 2021",
     y = "Actual Arrivals",
-    x = "Monthly Aggregates",
-    color = "State"
+    x = "Monthly Aggregates"
   )
 
 #ggsave("airports.png", width = 8, height = 6, dpi = 320)

@@ -12,8 +12,10 @@ rest_lg <- restr %>%
 states <- rest_lg %>%
   filter(region_name %in% airport_state$name)
 
+states_simple <- states %>%
+  filter(region_name %in% c("Texas","Florida","California","New York"))
 
-ggplot(states, aes(x= date, y = stringency_index_for_display)) +
+ggplot(states_simple, aes(x= date, y = stringency_index_for_display)) +
   geom_step(aes(color = region_name), size = 1.25) +
   theme_minimal() +
   ggsci::scale_color_jama() +
@@ -26,8 +28,8 @@ ggplot(states, aes(x= date, y = stringency_index_for_display)) +
   ) +
   scale_x_date(limits = c(as.Date("2021-01-01"),Sys.Date()), labels = scales::date_format(format = "%b-%y")) +
   labs(
-    title = "State Restriction Stringency",
-    #subtitle = "Comparing April 2019 to April 2021",
+    title = "Restriction Policies Differed Between States",
+    subtitle = "Comparing Four States in 2021",
     y = "Stringency Index",
     x = "Date",
     color = "State",
@@ -50,10 +52,11 @@ ggplot(rest_sum, aes(x = ind_mean, y = pct)) +
   geom_point(alpha = 1,aes(size = `2021`, color = "2021")) +
   geom_text(aes(label = facility), hjust = 0, nudge_x = .25) +
   geom_smooth(method = "lm",alpha = .1) +
-  scale_size_continuous(range = c(1,10)) +
+  scale_size_continuous(range = c(1,10), labels = scales::comma_format()) +
   ggsci::scale_color_jama() +
   scale_y_continuous(labels = scales::percent_format(1)) +
   theme_minimal() +
+  guides(color = guide_legend(override.aes = list(size = 7.5))) +
   labs(
     size = "Arrivals",
     color = "Year",
@@ -70,7 +73,7 @@ ggplot(rest_sum, aes(x = ind_mean, y = pct)) +
     plot.caption = element_text(color = "grey40",size = 6)
   )
 
-ggsave("lin_model.png", width = 8, height = 6, dpi = 320)
+#ggsave("lin_model.png", width = 8, height = 6, dpi = 320)
 
 model1 <- lm(rest_sum$pct ~ rest_sum$ind_mean)
 

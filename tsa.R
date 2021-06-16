@@ -6,7 +6,11 @@ library(ggtext)
 
 
 
-df1 <- rvest::html_table(content(GET("https://www.tsa.gov/coronavirus/passenger-throughput")))
+df1 <- rvest::html_table(
+  content(
+    GET("https://www.tsa.gov/coronavirus/passenger-throughput")
+    )
+  )
 
 #write_rds(df1,paste0("travel",Sys.Date(),".rds"))
 

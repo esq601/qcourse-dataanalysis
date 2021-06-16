@@ -14,15 +14,18 @@ largest <- apm_report %>%
   arrange(desc(flights))
 
 aus_report <- apm_report %>%
-  filter(facility %in% c("LAX","LGA","JFK","ATL","IAH","ORD","DFW","PHX","SFO","MCO","MIA","DTW","DEN","MSP")) %>%
+  filter(facility %in% c("LAX","LGA","JFK","ATL","IAH","ORD","DFW",
+                         "PHX","SFO","MCO","MIA","DTW","DEN","MSP",
+                         "CLT","TPA")) %>%
   filter(date_fmt >= as.Date("2019-01-01")) %>%
   mutate(open = case_when(
-    facility %in% c("LAX","SFO","LGA","JFK","ORD","DTW") ~ "NY/CA/IL/MI",
+    facility %in% c("LAX","SFO","LGA","JFK") ~ "NY/CA",
     T ~ "Other"
   ))
 
 aus_comp <- aus_report %>%
-  filter(lubridate::month(date_fmt) == 4 & lubridate::year(date_fmt) %in% c(2019,2021))
+  filter(lubridate::month(date_fmt) == 4 &
+           lubridate::year(date_fmt) %in% c(2019,2021))
 
 aus_pct <- aus_comp %>%
   group_by(facility) %>%
@@ -36,7 +39,8 @@ ggplot(aus_report, aes(x = date_fmt)) +
   geom_path(aes(y = actual_arrivals, color = open),size = 1.25) +
   geom_path(data = aus_comp, aes(y = actual_arrivals)) +
   geom_label(data = aus_pct, aes( y= 1.1 * actual_arrivals,
-                                  x = as.Date("2021-03-01"),label = scales::percent(pct,1)),
+                                  x = as.Date("2021-03-01"),
+                                  label = scales::percent(pct,1)),
              size = 3) +
   theme_minimal() +
   ggsci::scale_color_aaas() +

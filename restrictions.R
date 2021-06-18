@@ -1,6 +1,10 @@
+## Code writen by MAJ Marc Eskew for ORSA Q Course
+## 17 June 2021
+
+
 library(tidyverse)
 
-source("airports.R")
+source("airports.R") # Objects required from airports.R script
 
 restr <- read_csv("https://raw.githubusercontent.com/OxCGRT/USA-covid-policy/master/data/OxCGRT_US_latest.csv")
 
@@ -33,7 +37,7 @@ ggplot(states_simple, aes(x= date, y = stringency_index_for_display)) +
     y = "Stringency Index",
     x = "Date",
     color = "State",
-    caption = "Source: https://github.com/OxCGRT/USA-covid-policy"
+    caption = "Data Source: https://github.com/OxCGRT/USA-covid-policy"
   )
 
 #ggsave("restriction.png", width = 8, height = 6, dpi = 320)

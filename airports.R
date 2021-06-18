@@ -1,6 +1,12 @@
+## Code writen by MAJ Marc Eskew for ORSA Q Course
+## 17 June 2021
+
+
+
 library(tidyverse)
 library(extrafont)
 
+#APM report: https://aspm.faa.gov/asqp/sys/
 
 apm_report <- read_csv("apm_report.csv") %>%
   janitor::clean_names() %>%

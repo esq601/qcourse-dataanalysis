@@ -1,3 +1,7 @@
+## Code writen by MAJ Marc Eskew for ORSA Q Course
+## 17 June 2021
+
+
 library(tidyverse)
 library(rvest)
 library(httr)
@@ -30,7 +34,24 @@ df2 <- df1[[1]] %>%
 
 ggplot(df2, aes(x = date_real, y = pax_ra, color = year, group = year)) +
   geom_path(size = 1.25) +
-  theme_minimal()
+  theme_minimal() +  
+  ggsci::scale_color_aaas() +
+  scale_y_continuous(labels = scales::comma_format()) +
+  labs(
+    y = "Weekly Travels",
+    title = "Airline Travelers Through TSA Checkpoints",
+    subtitle = "Dropped enormously in 2020 but is recovering.",
+    color = "Year"
+  ) +
+  theme(
+    text = element_text(size = 16, family = "Bahnschrift"),
+    axis.title.x = element_blank(),
+    legend.position = "top"
+  )
+
+(2370641 - 87534) / 2370641
+
+#ggsave("travelers.png", width = 8, height = 6, dpi = 320)
 
 ggplot(df2, aes(x = date_jul, y = pax_ra, color = year, group = year)) +
   geom_path(size = 1.25) +
@@ -94,4 +115,4 @@ ggplot(df6, aes(x = date)) +
     plot.subtitle = element_textbox(color = col2)
   )
 
-#ggsave("tsa_pred.png", width = 8, height = 6, dpi = 320)
+ggsave("tsa_pred.png", width = 8, height = 6, dpi = 320)
